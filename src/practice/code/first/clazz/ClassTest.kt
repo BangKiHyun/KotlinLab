@@ -1,4 +1,4 @@
-package practice.code.first
+package practice.code.first.clazz
 
 class ClassTest {
 

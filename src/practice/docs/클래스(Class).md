@@ -154,3 +154,119 @@ class User(var id: Int) {
 }
 ```
 
+</br >
+
+## 초기화 블록 (Initializer Block)
+
+생성자를 만들때 프로퍼티를 초기화하는 것 말고 다른 기능을 실행하고 싶을 때, `Init`이라는 키워드를 통해 초기화 블록이 실행되도록 할 수 있다.
+
+```kotlin
+class Button(var id: Int){
+    var text= ""
+
+    // 초기화 블록
+    init {
+        println("Initializer Block Execution")
+    }
+
+    constructor(id: Int, text: String) : this(id) {
+        this.text = text
+        println("Secondary Constructor Execution")
+    }
+}
+```
+
+</br >
+
+만약에 부 생성자를 통해 생성자를 만들면 초기화 블록이 먼저 실행될까 부 생성자가 먼저 실행될까?
+
+**결론부터 말하자면 초기화 블록 먼저 실행된다.** 위 코드를 통해 실행해보자.
+
+~~~java
+fun main(args: Array<String>) {
+    var initTest1 = Button(10)
+    val initTest2 = Button(10, "button")
+}
+~~~
+
+![image](https://user-images.githubusercontent.com/43977617/125189551-98f15000-e273-11eb-9ee6-73a9d55fe6ee.png)
+
+결과를 보면 초기화 블록 실행 후 부 생성자가 실행되었다. 그리고 주 생성자를 통해 객체를 생성했을 때는 초기화 블록만 실행된 것을 확인할 수 있다.
+
+**만약 주 생성자가 없더라도 초기화 블록은 부 생성자보다 먼저 실행된다.**
+
+```kotlin
+class Button2 {
+    var id = 10
+    var text = ""
+
+    init {
+        println("Initializer Block Execution")
+    }
+
+    constructor(id: Int) {
+        this.id = id
+        println("Secondary Constructor Execution ${this.id}")
+    }
+
+    constructor(id: Int, text: String) {
+        this.text = text
+        println("Secondary Constructor Execution ${this.id}, ${this.text}")
+    }
+}
+```
+
+```kotlin
+fun main(args: Array<String>) {
+    var initTest1 = Button2(10)
+    val initTest2 = Button2(10, "button")
+}
+```
+
+![image](https://user-images.githubusercontent.com/43977617/125189700-61cf6e80-e274-11eb-92d8-862783cedaf8.png)
+
+</br >
+
+### 다중 초기화 블록
+
+초기화 블록은 한 클래스 내에 여러번 정의할 수 있다. 이 경우 **정의한 초기화 블록은 위에서부터 순차적으로 실행된 후, 부 생성자가 실행된다.**
+
+```kotlin
+class Button3 {
+    var id = 10
+    var text = ""
+
+    init {
+        println("First Initializer Block Execution")
+    }
+
+    init {
+        println("Second Initializer Block Execution")
+    }
+
+    constructor(id: Int) {
+        this.id = id
+        println("Secondary Constructor Execution ${this.id}")
+    }
+
+    constructor(id: Int, text: String) {
+        this.text = text
+        println("Secondary Constructor Execution ${this.id}, ${this.text}")
+    }
+
+    init {
+        println("Third Initializer Block Execution")
+    }
+}
+```
+
+```kotlin
+fun main(args: Array<String>) {
+    var initTest = Button3(10)
+}
+```
+
+![image](https://user-images.githubusercontent.com/43977617/125189844-25504280-e275-11eb-9256-83dabc890f84.png)
+
+세 번째 초기화 블록을 부 생성자 아래에 만들었는데, 그래도 부 생성자보다 먼저 호출되는것을 볼 수 있다.
+
