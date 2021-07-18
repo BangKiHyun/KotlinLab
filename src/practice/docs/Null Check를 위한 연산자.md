@@ -93,3 +93,41 @@ fun main() {
 
 만약 위 코드에서 `map`이 `null`이라면 `NullPointerException`이 터질것이다.
 
+</br >
+
+## let 함수
+
+`let` 함수는 **함수를 호출하는 객체를 이어지는 블록의 인자로 넘기고, 해당 블록의 결과 값을 반환하는 코틀린 함수이다.**
+
+`?.`연산자와 함꼐 사용하여 Nullable 타입을 사용할 수 없는 곳에 Nullable 타입의 변수를 사용할 수 있다.
+
+~~~kotlin
+fun DrawMap(map: Map) {
+    println("draw map!")
+}
+
+fun main() {
+    val nullableMap: Map? = CreateMap(10, 10)
+    DrawMap(nullableMap)
+}
+~~~
+
+![image](https://user-images.githubusercontent.com/43977617/126068342-8e795f56-eb05-48c6-9968-3aababaf9c19.png)
+
+위 코드를 보면 `DrawMap`에 필요한 변수는 `Map`이지만 입력하는 값은 `Map?`이다. 
+
+이때 `let`함수를 사용하면 에러없이 코드를 처리할 수 있다.
+
+~~~kotlin
+fun main() {
+    val nullableMap: Map? = CreateMap(10, 10)
+    nullableMap?.let {
+        DrawMap(nullableMap)
+    }
+}
+~~~
+
+`?.`연산자를 사용해서 해당 객체가 `null`인지 확인한 후 null이 아닐 경우에는 'Non Null' 타입의 객체가 되어 `let`힘수를 실행한다.
+
+그러므로 `let`함수가 넘긴 객체는 'Not Null' 타입으로 변환된 변수가 인자로 넘어와 `DrawMap`에 사용될 수 있다.
+

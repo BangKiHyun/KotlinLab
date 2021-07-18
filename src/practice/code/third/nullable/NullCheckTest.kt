@@ -10,13 +10,17 @@ fun CreateMap(width: Int, height: Int): Map? {
     else return null
 }
 
+fun DrawMap(map: Map) {
+    println("draw map!")
+}
+
 class Address(val city: String, val detail: String?)
 class User(val name: String, val addr: Address?)
 
 // ?: 연산자
 fun User.detailName(): String {
     val detail = this.addr?.detail
-    return detail?: "Unknown"
+    return detail ?: "Unknown"
 }
 
 fun main() {
@@ -29,4 +33,9 @@ fun main() {
     val user = User("bang", addr)
     println("?: 연산자 테스트 실행 결과")
     println(user.detailName())
+
+    val nullableMap: Map? = CreateMap(10, 10)
+    nullableMap?.let {
+        DrawMap(nullableMap)
+    }
 }
